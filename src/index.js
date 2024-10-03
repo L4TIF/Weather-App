@@ -1,5 +1,5 @@
 import "./style.css";
-
+const form = document.querySelector('form');
 
 // get data by location
 const fetchData = async (location) => {
@@ -10,6 +10,7 @@ const fetchData = async (location) => {
     }
     catch (err) {
         console.error(err)
+        document.write(err)
     }
 }
 
@@ -20,3 +21,11 @@ const processData = async (location) => {
     return { datetime, humidity, conditions, temp, windspeed, feelslike }
 }
 
+// handle form sumbit
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const input = document.querySelector('input').value;
+
+    const dataObj = await processData(input);
+    console.log(dataObj)
+})
