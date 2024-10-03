@@ -5,27 +5,42 @@ const form = document.querySelector('form');
 const fetchData = async (location) => {
     try {
         const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=metric&key=EXMJNVS7XJK4WNG6ATHXBUBG2&contentType=json`)
+        if (!response.ok)
+            throw new Error("Something went wrong", response.status, response.statusText);
+
         const data = await response.json();
+        console.log(data)
         return data;
     }
     catch (err) {
         console.error(err)
-        document.write(err)
     }
 }
 
 // extract the data that needed
 const processData = async (location) => {
+
     const data = await fetchData(location);
-    const { datetime, humidity, conditions, temp, windspeed, feelslike } = data.currentConditions;
-    return { datetime, humidity, conditions, temp, windspeed, feelslike }
+    if (data) {
+        const { description, resolvedAddress: address, timezone } = data;
+        const { datetime, humidity, conditions, temp, windspeed, feelslike } = data.currentConditions;
+        return { datetime, humidity, conditions, temp, windspeed, feelslike, description, address, timezone }
+    }
 }
 
 // handle form sumbit
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const input = document.querySelector('input').value;
+    const result = document.querySelector('.result');
+    result.textContent = 'loading';
 
     const dataObj = await processData(input);
+    if (dataObj) {
+        result.textContent = dataObj.conditions || "no weather data found";
+
+    } else {
+        result.textContent = 'invalid city name'
+    }
     console.log(dataObj)
 })
