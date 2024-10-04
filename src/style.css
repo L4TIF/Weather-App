@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hour-forcast{
+    scrollbar-color: #2C3A4E rgba(255, 166, 0, 0);
+    scrollbar-width: thin;
+}
