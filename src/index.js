@@ -50,3 +50,4 @@ form.addEventListener('submit', async (event) => {
     }
     console.log(dataObj)
 })
+
