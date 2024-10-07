@@ -1,3 +1,5 @@
+
+import { getSelectedUnit, renderBottomSection, renderMiddleSection, renderTopSection } from "./render";
 import "./style.css";
 
 const form = document.querySelector('form');
@@ -23,9 +25,10 @@ const processData = async (location) => {
 
     const data = await fetchData(location);
     if (data) {
-        const { description, resolvedAddress: address, timezone } = data;
-        const { datetime, humidity, conditions, temp, windspeed, feelslike, icon } = data.currentConditions;
-        return { datetime, humidity, conditions, temp, windspeed, feelslike, description, address, timezone, icon }
+
+        const { description, resolvedAddress: address, timezone, days } = data;
+        const { datetime, humidity, conditions, temp, windspeed, feelslike, icon, precipprob, uvindex } = data.currentConditions;
+        return { datetime, humidity, conditions, temp, windspeed, feelslike, description, address, timezone, icon, days, precipprob, uvindex }
     }
 }
 
@@ -33,21 +36,34 @@ const processData = async (location) => {
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const input = document.querySelector('input').value;
-    const result = document.querySelector('.result');
-    const location = document.querySelector('.location');
-    const temp = document.querySelector('.temp');
-    const icon = document.querySelector('.icon img');
+    const loader = document.getElementById('loader');
+    loader.classList.remove('hidden');
 
     const dataObj = await processData(input);
-    if (dataObj) {
-        result.textContent = dataObj.conditions || "no weather data found";
-        location.textContent = dataObj.address;
-        temp.innerHTML = dataObj.temp + '&deg;';
-        icon.src = require(`./assets/${dataObj.icon}.png`)
 
+
+    if (dataObj) {
+        renderTopSection(dataObj);
+        renderMiddleSection(dataObj.days[0].hours);
+        renderBottomSection(dataObj)
     } else {
-        result.textContent = 'invalid city name'
+        console.log('invalid city')
     }
-    console.log(dataObj)
+
 })
 
+
+const defaultLocation = (async () => {
+    const loader = document.getElementById('loader');
+    loader.classList.remove('hidden');
+    const input = 'mango jamshedpur';
+    const dataObj = await processData(input);
+    loader.classList.add('hidden');
+    if (dataObj) {
+        renderTopSection(dataObj);
+        renderMiddleSection(dataObj.days[0].hours);
+        renderBottomSection(dataObj)
+    } else {
+        console.log('invalid city')
+    }
+})();
