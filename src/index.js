@@ -40,7 +40,7 @@ form.addEventListener('submit', async (event) => {
     loader.classList.remove('hidden');
 
     const dataObj = await processData(input);
-
+    loader.classList.add('hidden');
 
     if (dataObj) {
         renderTopSection(dataObj);
