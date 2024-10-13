@@ -32,7 +32,7 @@ const renderMiddleSection = (data, currentTime) => {
         const childContainer = document.createElement('div');
         childContainer.classList.add(...('single-hour flex min-w-32 flex-col gap-4 px-5 text-center justify-between').split(' '));
 
-        if (index !== data.length - 1) childContainer.classList.add('border-r-2', 'border-r-[#2C3A4E]')
+        if (index !== hours.length - 1) childContainer.classList.add('border-r-2', 'border-r-[#2C3A4E]')
 
         const time = document.createElement('div');
         time.classList.add('time');
