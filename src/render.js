@@ -23,14 +23,14 @@ const renderMiddleSection = (data, currentTime) => {
     const todayRemainingHours = todayArr.hours;
     const [currentHour] = currentTime.split(":");
     let hours = todayRemainingHours.filter(value => value.datetime.split(":")[0] >= currentHour);
-    hours = [...hours, ...tommorowArr.hours].slice(0,24);
- 
+    hours = [...hours, ...tommorowArr.hours].slice(0, 24);
+
 
     console.log(todayArr, tommorowArr)
 
     hours.forEach((element, index) => {
         const childContainer = document.createElement('div');
-        childContainer.classList.add(...('single-hour flex md:min-w-32 flex-col gap-4 px-5 text-center justify-between').split(' '));
+        childContainer.classList.add(...('single-hour flex min-w-32 flex-col gap-4 px-5 text-center justify-between').split(' '));
 
         if (index !== data.length - 1) childContainer.classList.add('border-r-2', 'border-r-[#2C3A4E]')
 
