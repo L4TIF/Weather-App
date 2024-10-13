@@ -42,9 +42,10 @@ form.addEventListener('submit', async (event) => {
     const dataObj = await processData(input);
     loader.classList.add('hidden');
 
+
     if (dataObj) {
         renderTopSection(dataObj);
-        renderMiddleSection(dataObj.days[0].hours);
+        renderMiddleSection(dataObj.days, dataObj.datetime);
         renderBottomSection(dataObj)
     } else {
         console.log('invalid city')
@@ -61,7 +62,7 @@ const defaultLocation = (async () => {
     loader.classList.add('hidden');
     if (dataObj) {
         renderTopSection(dataObj);
-        renderMiddleSection(dataObj.days[0].hours);
+        renderMiddleSection(dataObj.days, dataObj.datetime);
         renderBottomSection(dataObj)
     } else {
         console.log('invalid city')

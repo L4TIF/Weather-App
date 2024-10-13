@@ -16,13 +16,21 @@ const renderTopSection = (data) => {
 
 }
 
-const renderMiddleSection = (data) => {
+const renderMiddleSection = (data, currentTime) => {
     const mainContainer = document.querySelector('.hour-forcast');
     mainContainer.replaceChildren();
+    const [todayArr, tommorowArr] = data;
+    const todayRemainingHours = todayArr.hours;
+    const [currentHour] = currentTime.split(":");
+    let hours = todayRemainingHours.filter(value => value.datetime.split(":")[0] >= currentHour);
+    hours = [...hours, ...tommorowArr.hours].slice(0,24);
+ 
 
-    data.forEach((element, index) => {
+    console.log(todayArr, tommorowArr)
+
+    hours.forEach((element, index) => {
         const childContainer = document.createElement('div');
-        childContainer.classList.add(...('single-hour flex min-w-32 flex-col gap-4 px-5 text-center justify-between').split(' '));
+        childContainer.classList.add(...('single-hour flex md:min-w-32 flex-col gap-4 px-5 text-center justify-between').split(' '));
 
         if (index !== data.length - 1) childContainer.classList.add('border-r-2', 'border-r-[#2C3A4E]')
 
@@ -52,14 +60,14 @@ const renderMiddleSection = (data) => {
 
 }
 
-const renderBottomSection = (data) =>{
- const realFeel = document.querySelector('.feels-like .data');
- const windSpeed = document.querySelector('.wind .data');
- const chanceOfRain = document.querySelector('.chances-of-rain .data');
- const uvIndex = document.querySelector('.uv-index .data');
- 
+const renderBottomSection = (data) => {
+    const realFeel = document.querySelector('.feels-like .data');
+    const windSpeed = document.querySelector('.wind .data');
+    const chanceOfRain = document.querySelector('.chances-of-rain .data');
+    const uvIndex = document.querySelector('.uv-index .data');
+
     //render
-    realFeel.innerHTML =  getSelectedUnit(data.feelslike) + '&deg;';
+    realFeel.innerHTML = getSelectedUnit(data.feelslike) + '&deg;';
     windSpeed.textContent = data.windspeed + ' km/h';
     uvIndex.textContent = data.uvindex;
     chanceOfRain.textContent = data.precipprob + '%'
@@ -106,4 +114,4 @@ const getSelectedUnit = (temp) => {
 
 
 
-export { getSelectedUnit, renderTopSection, renderMiddleSection,renderBottomSection }
+export { getSelectedUnit, renderTopSection, renderMiddleSection, renderBottomSection }
